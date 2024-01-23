@@ -56,5 +56,15 @@ tasks.register<HelloTask>("hello") {   //使用 register 时指明我们自定�
 tasks.register<Copy>("hello-copy") {   //这里使用Copy类型
     from("build/classes")   //使用 from 和 into 设置复制的目录和目标位置
     into("test")
-      dependsOn(tasks.build)   //依赖一下 build
+    dependsOn(tasks.build)   //依赖一下 build
+}
+
+var time: Long = 0
+gradle.taskGraph.beforeTask {
+    time = System.currentTimeMillis()
+}
+
+gradle.taskGraph.afterTask {
+    val takeTime = System.currentTimeMillis() - time
+    println("Task-$name time: ${takeTime} ms")
 }
