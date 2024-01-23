@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    id("maven-publish")   //首先引入 maven-publish 插件
 }
 
 group = "jzxy.cbq"
@@ -67,4 +68,19 @@ gradle.taskGraph.beforeTask {
 gradle.taskGraph.afterTask {
     val takeTime = System.currentTimeMillis() - time
     println("Task-$name time: ${takeTime} ms")
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("library") {   //发布的相关信息 Maven 坐标信息
+            groupId = "jzxy.cbq"
+            artifactId = "hello"
+            version = "0.0.1"
+            from(components["java"])   //发布为 jar 包形式
+        }
+    }
+
+    repositories {
+        mavenLocal()    //指定为本地 Maven 仓库
+    }
 }
